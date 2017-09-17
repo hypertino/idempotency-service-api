@@ -8,10 +8,28 @@ types:
   IdempotencyHeader:
     enum:
       - Idempotency-Keys
-  SavedResponse:
+
+  RequestInformation:
     type: object
     properties:
-      response: object
+      started_at:
+        type: number
+        format: long
+      message_id: string
+
+/requests/{uri}/{key}:
+  uriParameters:
+    uri:
+      description: URI of resource
+    key:
+      description: Idempotency key provided by client
+  put:
+    body:
+      RequestInformation
+  get:
+    responses:
+      200:
+        body: RequestInformation
 
 /responses/{uri}/{key}:
   uriParameters:
@@ -20,10 +38,9 @@ types:
     key:
       description: Idempotency key provided by client
   put:
-    body: SavedResponse
     responses:
       201:
+      200:
   get:
     responses:
       200:
-        body: SavedResponse
