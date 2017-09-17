@@ -17,7 +17,13 @@ types:
         format: long
       message_id: string
 
-/requests/{uri}/{key}:
+  ResponseWrapper:
+    type: object
+    properties:
+      headers: object
+      body: object
+
+/idempotent-requests/{uri}/{key}:
   uriParameters:
     uri:
       description: URI of resource
@@ -31,16 +37,18 @@ types:
       200:
         body: RequestInformation
 
-/responses/{uri}/{key}:
+/idempotent-responses/{uri}/{key}:
   uriParameters:
     uri:
       description: URI of resource
     key:
       description: Idempotency key provided by client
   put:
+    body: ResponseWrapper
     responses:
       201:
       200:
   get:
     responses:
       200:
+        body: ResponseWrapper
